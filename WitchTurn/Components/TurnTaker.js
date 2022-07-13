@@ -23,7 +23,7 @@ function TurnTaker(props) {
         <View style={styles.InfoRight}></View>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => props.RemoveFunction(props.Placement)}>
         <View style={styles.DeleteButton}>
           <Text style={styles.DeleteText}>X</Text>
         </View>
