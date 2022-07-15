@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Gobo from "./assets/Pictures/GoboTest.png";
 
 import TurnTaker from "./Components/TurnTaker";
@@ -66,7 +72,30 @@ export default function App() {
   function RemoveParticipant(participantIndex) {
     let participants = [...turnTakersList];
     participants.splice(participantIndex, 1);
-    participants.sort((a, b) => b["Initiative"] - a["Initiative"]);
+    setTurnTakersList(participants);
+  }
+
+  function advanceTurn() {
+    let participants = [...turnTakersList];
+
+    if (participants.length === 0) {
+      return;
+    }
+    let temp = participants[0];
+    participants.splice(0, 1);
+    participants.push(temp);
+
+    setTurnTakersList(participants);
+  }
+
+  function reduceTurn() {
+    let participants = [...turnTakersList];
+
+    if (participants.length === 0) {
+      return;
+    }
+    let temp = participants.pop();
+    participants = [temp, ...participants];
     setTurnTakersList(participants);
   }
 
@@ -88,6 +117,19 @@ export default function App() {
           );
         })}
       </ScrollView>
+      <View style={styles.turnMoveContainer}>
+        <TouchableOpacity onPress={() => reduceTurn()}>
+          <View style={styles.advanceButton}>
+            <Text> {"<"} </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => advanceTurn()}>
+          <View style={styles.advanceButton}>
+            <Text> {">"} </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
       <StatusBar style="light" />
     </View>
   );
@@ -123,5 +165,25 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "60%",
     borderRadius: 30,
+  },
+
+  turnMoveContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 180,
+    marginTop: 15,
+    backgroundColor: "#a11",
+    borderRadius: 20,
+    padding: 8,
+  },
+
+  advanceButton: {
+    backgroundColor: "white",
+    height: 60,
+    width: 60,
+    textAlign: "center",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
