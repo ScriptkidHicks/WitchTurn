@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Gobo from "./assets/Pictures/GoboTest.png";
 
+import CustomModal from "./Components/Modals/CustomModal";
+
 import TurnTaker from "./Components/TurnTaker";
 
 export default function App() {
@@ -68,6 +70,8 @@ export default function App() {
       Bonus: 1,
     },
   ]);
+
+  const [customModalVisible, setCustomModalVisible] = useState(true);
 
   function RemoveParticipant(participantIndex) {
     let participants = [...turnTakersList];
@@ -129,7 +133,14 @@ export default function App() {
           </View>
         </TouchableOpacity>
       </View>
-
+      <View style={styles.bottomButtons}>
+        <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
+          <View style={styles.addButton}>
+            <Text>C</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      {customModalVisible && <CustomModal deactivate={setCustomModalVisible} />}
       <StatusBar style="light" />
     </View>
   );
@@ -185,5 +196,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  bottomButtons: {
+    backgroundColor: "green",
+    width: "100%",
+    height: 60,
+    position: "absolute",
+    bottom: 20,
+    borderRadius: 25,
+    justifyContent: "space-between",
+  },
+
+  addButton: {
+    height: 60,
+    width: 60,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
   },
 });
