@@ -6,8 +6,10 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import Gobo from "./assets/Pictures/GoboTest.png";
+import CustomButtonImage from "./assets/Pictures/customButton.png";
 
 import CustomModal from "./Components/Modals/CustomModal";
 
@@ -73,6 +75,17 @@ export default function App() {
 
   const [customModalVisible, setCustomModalVisible] = useState(true);
 
+  function AddParticipant(name, initiative, bonus) {
+    let partipants = [...turnTakersList];
+    partipants.push({
+      name: name,
+      Initiative: initiative,
+      Bonus: bonus,
+      imageSource: Gobo,
+    });
+    setTurnTakersList(partipants);
+  }
+
   function RemoveParticipant(participantIndex) {
     let participants = [...turnTakersList];
     participants.splice(participantIndex, 1);
@@ -136,11 +149,21 @@ export default function App() {
       <View style={styles.bottomButtons}>
         <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
           <View style={styles.addButton}>
-            <Text>C</Text>
+            <Text>T</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
+          <View>
+            <Image source={CustomButtonImage} style={styles.addButton} />
           </View>
         </TouchableOpacity>
       </View>
-      {customModalVisible && <CustomModal deactivate={setCustomModalVisible} />}
+      {customModalVisible && (
+        <CustomModal
+          deactivate={setCustomModalVisible}
+          AddParticipant={AddParticipant}
+        />
+      )}
       <StatusBar style="light" />
     </View>
   );
@@ -206,6 +229,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     borderRadius: 25,
     justifyContent: "space-between",
+    flexDirection: "row",
   },
 
   addButton: {
