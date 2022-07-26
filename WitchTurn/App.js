@@ -41,48 +41,37 @@ export default function App() {
       imageSource: Gobo,
       Bonus: 1,
     },
-    {
-      name: "Mark",
-      Initiative: 3,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Sam",
-      Initiative: 4,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Rob",
-      Initiative: 22,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Devin",
-      Initiative: 10,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Pork",
-      Initiative: 8,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
   ]);
 
-  const [customModalVisible, setCustomModalVisible] = useState(true);
+  const [customModalVisible, setCustomModalVisible] = useState(false);
+
+  function SortList(toBeSorted) {
+    toBeSorted.sort((a, b) => {
+      return a.Initiative == b.Initiative
+        ? b.Bonus - a.Bonus
+        : b.Initiative - a.Initiative;
+    });
+  }
 
   function AddParticipant(name, initiative, bonus) {
     let partipants = [...turnTakersList];
+    let headOfList = partipants[0];
     partipants.push({
       name: name,
       Initiative: initiative,
       Bonus: bonus,
       imageSource: Gobo,
     });
+    SortList(partipants);
+    let offset = partipants.findIndex((obj) => {
+      return obj === headOfList;
+    });
+    console.log(partipants.slice(0, offset));
+    console.log(partipants.slice(offset, partipants.length));
+    partipants = [
+      ...partipants.slice(offset, partipants.length),
+      ...partipants.slice(0, offset),
+    ];
     setTurnTakersList(partipants);
   }
 
@@ -147,9 +136,32 @@ export default function App() {
         </TouchableOpacity>
       </View>
       <View style={styles.bottomButtons}>
-        <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
+        <TouchableOpacity
+          onPress={() => {
+            let participants = [...turnTakersList];
+            SortList(participants);
+            setTurnTakersList(participants);
+          }}
+        >
           <View style={styles.addButton}>
             <Text>T</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            let participants = [...turnTakersList];
+            let temp = participants[0];
+            SortList(participants);
+            console.log(
+              participants.findIndex((obj) => {
+                return obj === temp;
+              })
+            );
+            setTurnTakersList(participants);
+          }}
+        >
+          <View style={styles.addButton}>
+            <Text>B</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
