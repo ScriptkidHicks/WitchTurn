@@ -16,32 +16,9 @@ import CustomModal from "./Components/Modals/CustomModal";
 import TurnTaker from "./Components/TurnTaker";
 
 export default function App() {
-  const [turnTakersList, setTurnTakersList] = useState([
-    {
-      name: "Persephone",
-      Initiative: 12,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Kyle",
-      Initiative: 13,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "pam",
-      Initiative: 1,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-    {
-      name: "Nick",
-      Initiative: 2,
-      imageSource: Gobo,
-      Bonus: 1,
-    },
-  ]);
+  const [turnTakersList, setTurnTakersList] = useState([]);
+
+  const [offset, setOffset] = useState(0);
 
   const [customModalVisible, setCustomModalVisible] = useState(false);
 
@@ -54,20 +31,24 @@ export default function App() {
   }
 
   function AddParticipant(name, initiative, bonus) {
+    console.log("The offset is " + offset);
     let partipants = [...turnTakersList];
-    let headOfList = partipants[0];
-    partipants.push({
+    let newParticipant = {
       name: name,
       Initiative: initiative,
       Bonus: bonus,
       imageSource: Gobo,
-    });
+    };
+    partipants.push(newParticipant);
     SortList(partipants);
-    let offset = partipants.findIndex((obj) => {
-      return obj === headOfList;
+    let insertedIndex = partipants.findIndex((obj) => {
+      return obj === newParticipant;
     });
-    console.log(partipants.slice(0, offset));
-    console.log(partipants.slice(offset, partipants.length));
+
+    if (insertedIndex > partipants.length - 1 - offset) {
+      setOffset(offset + 1);
+    }
+
     partipants = [
       ...partipants.slice(offset, partipants.length),
       ...partipants.slice(0, offset),
@@ -79,6 +60,10 @@ export default function App() {
     let participants = [...turnTakersList];
     participants.splice(participantIndex, 1);
     setTurnTakersList(participants);
+    if (participantIndex < offset) {
+      setOffset(offset - 1);
+    }
+    console.log(offset);
   }
 
   function advanceTurn() {
@@ -92,6 +77,12 @@ export default function App() {
     participants.push(temp);
 
     setTurnTakersList(participants);
+    let newOffset = 0;
+    if (offset != participants.length - 1) {
+      newOffset = offset + 1;
+    }
+    setOffset(newOffset);
+    console.log(offset);
   }
 
   function reduceTurn() {
@@ -103,6 +94,15 @@ export default function App() {
     let temp = participants.pop();
     participants = [temp, ...participants];
     setTurnTakersList(participants);
+
+    let newOffset = 0;
+    if (offset == 0) {
+      newOffset = participants.length - 1;
+    } else {
+      newOffset = offset - 1;
+    }
+    setOffset(newOffset);
+    console.log(offset);
   }
 
   return (
