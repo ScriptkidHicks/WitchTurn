@@ -12,6 +12,7 @@ import Gobo from "./assets/Pictures/GoboTest.png";
 import CustomButtonImage from "./assets/Pictures/customButton.png";
 
 import CustomModal from "./Components/Modals/CustomModal";
+import GenericModal from "./Components/Modals/GenericModal";
 
 import TurnTaker from "./Components/TurnTaker";
 
@@ -21,6 +22,7 @@ export default function App() {
   const [offset, setOffset] = useState(0);
 
   const [customModalVisible, setCustomModalVisible] = useState(false);
+  const [genericModalVisible, setGenericModalVisible] = useState(false);
 
   function SortList(toBeSorted) {
     toBeSorted.sort((a, b) => {
@@ -63,6 +65,9 @@ export default function App() {
     if (participantIndex < offset) {
       setOffset(offset - 1);
     }
+    if (offset >= participants.length) {
+      setOffset(0);
+    }
     console.log(offset);
   }
 
@@ -78,11 +83,10 @@ export default function App() {
 
     setTurnTakersList(participants);
     let newOffset = 0;
-    if (offset != participants.length - 1) {
+    if (offset >= participants.length) {
       newOffset = offset + 1;
     }
     setOffset(newOffset);
-    console.log(offset);
   }
 
   function reduceTurn() {
@@ -149,19 +153,11 @@ export default function App() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            let participants = [...turnTakersList];
-            let temp = participants[0];
-            SortList(participants);
-            console.log(
-              participants.findIndex((obj) => {
-                return obj === temp;
-              })
-            );
-            setTurnTakersList(participants);
+            setGenericModalVisible(true);
           }}
         >
           <View style={styles.addButton}>
-            <Text>B</Text>
+            <Text>G</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
@@ -175,6 +171,9 @@ export default function App() {
           deactivate={setCustomModalVisible}
           AddParticipant={AddParticipant}
         />
+      )}
+      {genericModalVisible && (
+        <GenericModal deactivate={setGenericModalVisible} />
       )}
       <StatusBar style="light" />
     </View>
