@@ -27,7 +27,11 @@ function GenericModal(props) {
         centerContent={true}
         contentContainerStyle={styles.scrollStyles}
       >
-        <GenericInsert ImageSource={Gobo}></GenericInsert>
+        <GenericInsert
+          ImageSource={Gobo}
+          Name={"Gobo"}
+          Bonus={3}
+        ></GenericInsert>
         <GenericInsert></GenericInsert>
         <GenericInsert></GenericInsert>
         <GenericInsert></GenericInsert>

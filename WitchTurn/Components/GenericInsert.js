@@ -1,10 +1,14 @@
-import { TouchableOpacity, StyleSheet, View, Image } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Image, Text } from "react-native";
 
 function GenericInsert(props) {
   return (
     <TouchableOpacity>
       <View style={styles.genericInsertBody}>
-        <Image source={props.ImageSource} />
+        <Image style={styles.genericPicture} source={props.ImageSource} />
+        <View style={styles.nameAndinfo}>
+          <Text style={styles.info}>Name: {props.Name}</Text>
+          <Text style={styles.info}>Bonus: {props.Bonus}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -25,6 +29,19 @@ const styles = StyleSheet.create({
   },
 
   genericPicture: {
-    maxHeight: "100%",
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
+
+  nameAndinfo: {
+    width: "70%",
+    backgroundColor: "black",
+    borderRadius: 10,
+    padding: 5,
+  },
+
+  info: {
+    color: "white",
   },
 });
