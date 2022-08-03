@@ -31,32 +31,8 @@ function GenericModal(props) {
           ImageSource={Gobo}
           Name={"Gobo"}
           Bonus={3}
+          Add={props.Add}
         ></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
-        <GenericInsert></GenericInsert>
       </ScrollView>
     </View>
   );

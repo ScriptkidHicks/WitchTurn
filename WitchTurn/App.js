@@ -23,6 +23,7 @@ export default function App() {
 
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [genericModalVisible, setGenericModalVisible] = useState(false);
+  const [namesList, setNamesList] = useState([]);
 
   function SortList(toBeSorted) {
     toBeSorted.sort((a, b) => {
@@ -33,10 +34,18 @@ export default function App() {
   }
 
   function AddParticipant(name, initiative, bonus) {
-    console.log("The offset is " + offset);
+    let nameObject = namesList.find((item) => item.name === name);
+    let realName = name;
+    if (nameObject) {
+      nameObject.count++;
+      realName = name + " (" + nameObject.count + ")";
+    } else {
+      let names = [...namesList, { name: realName, count: 1 }];
+      setNamesList(names);
+    }
     let partipants = [...turnTakersList];
     let newParticipant = {
-      name: name,
+      name: realName,
       Initiative: initiative,
       Bonus: bonus,
       imageSource: Gobo,
@@ -68,7 +77,6 @@ export default function App() {
     if (offset >= participants.length) {
       setOffset(0);
     }
-    console.log(offset);
   }
 
   function advanceTurn() {
@@ -106,7 +114,6 @@ export default function App() {
       newOffset = offset - 1;
     }
     setOffset(newOffset);
-    console.log(offset);
   }
 
   return (
@@ -173,7 +180,10 @@ export default function App() {
         />
       )}
       {genericModalVisible && (
-        <GenericModal deactivate={setGenericModalVisible} />
+        <GenericModal
+          deactivate={setGenericModalVisible}
+          Add={AddParticipant}
+        />
       )}
       <StatusBar style="light" />
     </View>

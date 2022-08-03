@@ -2,7 +2,15 @@ import { TouchableOpacity, StyleSheet, View, Image, Text } from "react-native";
 
 function GenericInsert(props) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        props.Add(
+          props.Name,
+          Math.floor(Math.random() * 20) + props.Bonus,
+          props.Bonus
+        );
+      }}
+    >
       <View style={styles.genericInsertBody}>
         <Image style={styles.genericPicture} source={props.ImageSource} />
         <View style={styles.nameAndinfo}>
