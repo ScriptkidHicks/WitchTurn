@@ -6,12 +6,26 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   TextInput,
+  Image,
+  ScrollView,
 } from "react-native";
+
+import Unknown from "../../assets/Pictures/UnknownSoldier.png";
+import Wizard from "../../assets/Pictures/Wizard.png";
+
+import { characterImageList } from "../../assets/CharacterImages";
 
 function CustomModal(props) {
   const [name, setName] = useState(null);
-  const [bonus, setBonus] = useState("0");
-  const [initiative, setInitiative] = useState("0");
+  const [bonus, setBonus] = useState();
+  const [initiative, setInitiative] = useState();
+  const [characterImage, setCharacterImage] = useState(Unknown);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  function pickImage(imageChoice) {
+    setCharacterImage(imageChoice);
+    setModalOpen(false);
+  }
 
   return (
     <View style={styles.interfaceBody}>
@@ -27,6 +41,34 @@ function CustomModal(props) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardWrapper}
       >
+        {!modalOpen && (
+          <TouchableOpacity
+            onPress={() => {
+              setModalOpen(true);
+            }}
+          >
+            <Image source={characterImage} style={styles.characterImage} />
+          </TouchableOpacity>
+        )}
+        {modalOpen && (
+          <ScrollView>
+            {characterImageList.map((image, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    pickImage(image);
+                  }}
+                >
+                  <Image
+                    ley={index}
+                    style={styles.characterImage}
+                    source={image}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        )}
         <TextInput
           style={styles.nameInput}
           placeholder="Name"
@@ -87,7 +129,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 60,
-    height: 300,
   },
 
   nameInput: {
@@ -105,5 +146,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     textAlign: "center",
     marginTop: 30,
+  },
+
+  characterImage: {
+    height: 60,
+    width: 60,
+    borderRadius: 10,
   },
 });

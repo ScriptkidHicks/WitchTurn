@@ -36,6 +36,12 @@ export default function App() {
   function AddParticipant(name, initiative, bonus) {
     let nameObject = namesList.find((item) => item.name === name);
     let realName = name;
+    if (bonus === undefined) {
+      bonus = 0;
+    }
+    if (initiative === undefined) {
+      initiative = Math.floor(Math.random() * 20) + bonus;
+    }
     if (nameObject) {
       nameObject.count++;
       realName = name + " (" + nameObject.count + ")";
