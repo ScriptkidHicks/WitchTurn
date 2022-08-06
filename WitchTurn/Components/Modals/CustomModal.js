@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 import Unknown from "../../assets/Pictures/UnknownSoldier.png";
-import Wizard from "../../assets/Pictures/Wizard.png";
 
 import { characterImageList } from "../../assets/CharacterImages";
 
@@ -51,16 +50,24 @@ function CustomModal(props) {
           </TouchableOpacity>
         )}
         {modalOpen && (
-          <ScrollView>
+          <ScrollView
+            horizontal={true}
+            indicatorStyle="white"
+            snapToInterval={3}
+            endFillColor={"red"}
+            style={styles.imageSelect}
+            contentContainerStyle={styles.imageSelectContainer}
+          >
             {characterImageList.map((image, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     pickImage(image);
                   }}
                 >
                   <Image
-                    ley={index}
+                    key={index}
                     style={styles.characterImage}
                     source={image}
                   />
@@ -90,7 +97,7 @@ function CustomModal(props) {
       </KeyboardAvoidingView>
       <TouchableOpacity
         onPress={() => {
-          props.AddParticipant(name, initiative, bonus);
+          props.AddParticipant(name, initiative, bonus, characterImage);
         }}
       >
         <Text style={styles.customInsertText}>Insert Custom</Text>
@@ -138,6 +145,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 60,
     textAlign: "center",
+    marginBottom: 20,
   },
 
   customInsertText: {
@@ -152,5 +160,17 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 10,
+    margin: 5,
+  },
+
+  imageSelect: {
+    maxHeight: 140,
+    width: "100%",
+  },
+
+  imageSelectContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
 });

@@ -33,7 +33,7 @@ export default function App() {
     });
   }
 
-  function AddParticipant(name, initiative, bonus) {
+  function AddParticipant(name, initiative, bonus, characterImage) {
     let nameObject = namesList.find((item) => item.name === name);
     let realName = name;
     if (bonus === undefined) {
@@ -54,7 +54,7 @@ export default function App() {
       name: realName,
       Initiative: initiative,
       Bonus: bonus,
-      imageSource: Gobo,
+      imageSource: characterImage,
     };
     partipants.push(newParticipant);
     SortList(partipants);

@@ -4,7 +4,7 @@ function GenericInsert(props) {
   return (
     <TouchableOpacity
       onPress={() => {
-        props.Add(props.Name, undefined, props.Bonus);
+        props.Add(props.Name, undefined, props.Bonus, props.ImageSource);
       }}
     >
       <View style={styles.genericInsertBody}>
