@@ -8,8 +8,10 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import Gobo from "./assets/Pictures/GoboTest.png";
+
 import CustomButtonImage from "./assets/Pictures/customButton.png";
+
+import Storage from "./StorageManagement/Storage";
 
 import CustomModal from "./Components/Modals/CustomModal";
 import GenericModal from "./Components/Modals/GenericModal";
