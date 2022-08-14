@@ -6,12 +6,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 
-import CustomButtonImage from "./assets/Pictures/customButton.png";
-
-import Storage from "./StorageManagement/Storage";
+import { StoreData, RetrieveData } from "./StorageManagement/Storage";
 
 import CustomModal from "./Components/Modals/CustomModal";
 import GenericModal from "./Components/Modals/GenericModal";
@@ -124,6 +121,21 @@ export default function App() {
     setOffset(newOffset);
   }
 
+  function SaveParticipantList(ParticipantList) {
+    console.log(turnTakersList);
+    StoreData("participants", ParticipantList);
+  }
+
+  function LoadParticipantList() {
+    const participants = RetrieveData("participants");
+    console.log("these are the participants: " + participants);
+    if (participants != null) {
+      setTurnTakersList(participants);
+    } else {
+      //there shouldn't be a need to error handle here, because we control what they can and can't load.
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.TitleBar}>Witch Turn</Text>
@@ -157,13 +169,20 @@ export default function App() {
       <View style={styles.bottomButtons}>
         <TouchableOpacity
           onPress={() => {
-            let participants = [...turnTakersList];
-            SortList(participants);
-            setTurnTakersList(participants);
+            SaveParticipantList(turnTakersList);
           }}
         >
           <View style={styles.addButton}>
-            <Text>T</Text>
+            <Text>Save</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            LoadParticipantList();
+          }}
+        >
+          <View style={styles.addButton}>
+            <Text>Load</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -172,12 +191,12 @@ export default function App() {
           }}
         >
           <View style={styles.addButton}>
-            <Text>G</Text>
+            <Text>Generic</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setCustomModalVisible(true)}>
-          <View>
-            <Image source={CustomButtonImage} style={styles.addButton} />
+          <View style={styles.addButton}>
+            <Text>Custom</Text>
           </View>
         </TouchableOpacity>
       </View>
