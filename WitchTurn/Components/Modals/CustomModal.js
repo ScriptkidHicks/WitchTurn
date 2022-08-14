@@ -98,6 +98,7 @@ function CustomModal(props) {
       <TouchableOpacity
         onPress={() => {
           props.AddParticipant(name, initiative, bonus, characterImage);
+          props.deactivate(false);
         }}
       >
         <Text style={styles.customInsertText}>Insert Custom</Text>

@@ -12,17 +12,24 @@ import { StoreData, RetrieveData } from "./StorageManagement/Storage";
 
 import CustomModal from "./Components/Modals/CustomModal";
 import GenericModal from "./Components/Modals/GenericModal";
+import LoadModal from "./Components/Modals/LoadModal";
 
 import TurnTaker from "./Components/TurnTaker";
 
 export default function App() {
   const [turnTakersList, setTurnTakersList] = useState([]);
 
+  const [loadedSessions, setLoadedSessions] = useState([]);
+
   const [offset, setOffset] = useState(0);
 
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [genericModalVisible, setGenericModalVisible] = useState(false);
+  const [loadModalVisible, setLoadModalVisible] = useState(false);
+
   const [namesList, setNamesList] = useState([]);
+
+  const SavedSessions = "SavedSessions";
 
   function SortList(toBeSorted) {
     toBeSorted.sort((a, b) => {
@@ -121,16 +128,26 @@ export default function App() {
     setOffset(newOffset);
   }
 
-  function SaveParticipantList(ParticipantList) {
-    console.log(turnTakersList);
-    StoreData("participants", ParticipantList);
+  async function LoadLoadModal() {
+    const sessions = await RetrieveData(SavedSessions);
+    await setLoadedSessions(sessions);
+    setLoadModalVisible(true);
   }
 
-  async function LoadParticipantList() {
-    const retrievedData = await RetrieveData("participants");
+  async function SaveSession(ParticipantList) {
+    let sessions = await RetrieveData(SavedSessions);
+    if (sessions === null) {
+      sessions = [];
+    }
+    sessions.push(turnTakersList);
+    StoreData(SavedSessions, sessions);
+  }
+
+  async function LoadSessions() {
+    let retrievedData = await RetrieveData(SavedSessions);
     console.log(retrievedData);
-    if (retrievedData != null) {
-      setTurnTakersList(retrievedData);
+    if (retrievedData == null) {
+      retrievedData = [];
     }
   }
 
@@ -167,7 +184,7 @@ export default function App() {
       <View style={styles.bottomButtons}>
         <TouchableOpacity
           onPress={() => {
-            SaveParticipantList(turnTakersList);
+            SaveSession(turnTakersList);
           }}
         >
           <View style={styles.addButton}>
@@ -176,7 +193,7 @@ export default function App() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            LoadParticipantList();
+            LoadLoadModal();
           }}
         >
           <View style={styles.addButton}>
@@ -209,6 +226,9 @@ export default function App() {
           deactivate={setGenericModalVisible}
           Add={AddParticipant}
         />
+      )}
+      {loadModalVisible && (
+        <LoadModal deactivate={setLoadModalVisible} Add={AddParticipant} />
       )}
       <StatusBar style="light" />
     </View>
