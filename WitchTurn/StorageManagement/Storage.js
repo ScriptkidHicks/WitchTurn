@@ -13,9 +13,7 @@ const RetrieveData = async (key) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key);
     console.log("unparsed this is " + jsonValue);
-    const parsedValue = jsonValue != null ? JSON.parse(jsonValue) : null;
-    console.log("parsed this is " + parsedValue);
-    return parsedValue;
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (error) {
     alert("oops, something wen't wrong");
   }

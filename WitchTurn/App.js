@@ -126,13 +126,11 @@ export default function App() {
     StoreData("participants", ParticipantList);
   }
 
-  function LoadParticipantList() {
-    const participants = RetrieveData("participants");
-    console.log("these are the participants: " + participants);
-    if (participants != null) {
-      setTurnTakersList(participants);
-    } else {
-      //there shouldn't be a need to error handle here, because we control what they can and can't load.
+  async function LoadParticipantList() {
+    const retrievedData = await RetrieveData("participants");
+    console.log(retrievedData);
+    if (retrievedData != null) {
+      setTurnTakersList(retrievedData);
     }
   }
 
