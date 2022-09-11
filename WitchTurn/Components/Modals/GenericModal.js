@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Gobo from "../../assets/Pictures/GoboTest.png";
-
 import GenericInsert from "../GenericInsert";
 
 function GenericModal(props) {

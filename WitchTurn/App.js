@@ -16,6 +16,8 @@ import LoadModal from "./Components/Modals/LoadModal";
 
 import TurnTaker from "./Components/TurnTaker";
 
+import RandomNames from "./Components/RandomNames";
+
 export default function App() {
   const [turnTakersList, setTurnTakersList] = useState([]);
 
@@ -40,18 +42,21 @@ export default function App() {
   }
 
   function AddParticipant(name, initiative, bonus, characterImage) {
-    let nameObject = namesList.find((item) => item.name === name);
-    let realName = name;
+    let tempName = name == "" || name == null ? RandomNames[0] : name;
+    let nameObject = namesList.find((item) => item.name === tempName);
+    let realName;
     if (bonus === undefined) {
       bonus = 0;
     }
     if (initiative === undefined) {
-      initiative = Math.floor(Math.random() * 20) + bonus;
+      //It's important to have it be +1 instead of 20, because this keeps it from being 0 initiative.
+      initiative = Math.floor(Math.random() * 19 + 1) + Number(bonus);
     }
     if (nameObject) {
       nameObject.count++;
-      realName = name + " (" + nameObject.count + ")";
+      realName = tempName + " (" + nameObject.count + ")";
     } else {
+      realName = tempName;
       let names = [...namesList, { name: realName, count: 1 }];
       setNamesList(names);
     }
@@ -61,6 +66,7 @@ export default function App() {
       Initiative: initiative,
       Bonus: bonus,
       imageSource: characterImage,
+      checked: false,
     };
     partipants.push(newParticipant);
     SortList(partipants);
@@ -89,6 +95,13 @@ export default function App() {
     if (offset >= participants.length) {
       setOffset(0);
     }
+  }
+
+  function updateReactions(participantIndex) {
+    let participants = [...turnTakersList];
+    participants[participantIndex].checked =
+      !participants[participantIndex].checked;
+    setTurnTakersList(participants);
   }
 
   function advanceTurn() {
@@ -165,6 +178,10 @@ export default function App() {
               Placement={index}
               RemoveFunction={RemoveParticipant}
               key={(character.Initiative, character.nameTag, index)}
+              pressCheck={() => {
+                updateReactions(index);
+              }}
+              checked={character.checked}
             />
           );
         })}

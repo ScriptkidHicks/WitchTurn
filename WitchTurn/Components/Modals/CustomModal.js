@@ -12,6 +12,8 @@ import {
 
 import Unknown from "../../assets/Pictures/UnknownSoldier.png";
 
+import RandomNames from "../RandomNames";
+
 import { characterImageList } from "../../assets/CharacterImages";
 
 function CustomModal(props) {
@@ -80,7 +82,10 @@ function CustomModal(props) {
           style={styles.nameInput}
           placeholder="Name"
           value={name}
-          onChangeText={(text) => setName(text)}
+          onChangeText={(text) => {
+            console.log("The name being placed is: " + text);
+            setName(text == "" || text == null ? RandomNames[0] : text);
+          }}
         ></TextInput>
         <TextInput
           style={styles.nameInput}

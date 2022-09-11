@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
+import Checkbox from "./Gadgets/Checkbox";
+
 function TurnTaker(props) {
   return (
     <View style={styles.TurnTakerBody}>
@@ -21,6 +23,13 @@ function TurnTaker(props) {
           </Text>
         </View>
         <View style={styles.InfoRight}></View>
+      </View>
+      <View style={styles.ReactionBox}>
+        <Text style={{ color: "white" }}>Reaction Used: </Text>
+        <Checkbox
+          pressCheck={props.pressCheck}
+          checked={props.checked}
+        ></Checkbox>
       </View>
 
       <TouchableOpacity onPress={() => props.RemoveFunction(props.Placement)}>
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
   },
 
   TurnTakerInfo: {
-    width: "72%",
+    flexGrow: 1,
     height: "100%",
     paddingLeft: 10,
   },
@@ -96,5 +105,15 @@ const styles = StyleSheet.create({
   DeleteText: {
     color: "white",
     fontSize: 24,
+  },
+
+  ReactionBox: {
+    backgroundColor: "black",
+    borderRadius: 10,
+    flexGrow: 1,
+    marginRight: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

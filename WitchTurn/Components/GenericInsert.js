@@ -1,4 +1,11 @@
-import { TouchableOpacity, StyleSheet, View, Image, Text } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  CheckBox,
+} from "react-native";
 
 function GenericInsert(props) {
   return (
