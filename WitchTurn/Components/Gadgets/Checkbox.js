@@ -4,12 +4,10 @@ import { useState } from "react/cjs/react.development";
 import WhiteCheck from "../../assets/Pictures/CheckMark.png";
 
 function Checkbox(props) {
-  console.log(props.checked);
   return (
     <TouchableOpacity
       onPress={() => {
         props.pressCheck();
-        console.log(props.checked);
       }}
     >
       <Image

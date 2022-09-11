@@ -12,11 +12,19 @@ const StoreData = async (key, value) => {
 const RetrieveData = async (key) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key);
-    console.log("unparsed this is " + jsonValue);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (error) {
     alert("oops, something wen't wrong");
   }
 };
 
-export { StoreData, RetrieveData };
+//I should remove this function once I'm done. This is solely so that I don't clog up memory in the mock phone as I develop
+const ClearMemory = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    console.log("We have encountered error: " + e);
+  }
+};
+
+export { StoreData, RetrieveData, ClearMemory };

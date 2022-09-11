@@ -8,11 +8,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { StoreData, RetrieveData } from "./StorageManagement/Storage";
+import {
+  StoreData,
+  RetrieveData,
+  ClearMemory,
+} from "./StorageManagement/Storage";
 
 import CustomModal from "./Components/Modals/CustomModal";
 import GenericModal from "./Components/Modals/GenericModal";
 import LoadModal from "./Components/Modals/LoadModal";
+import SaveModal from "./Components/Modals/SaveModal";
 
 import TurnTaker from "./Components/TurnTaker";
 
@@ -28,6 +33,7 @@ export default function App() {
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [genericModalVisible, setGenericModalVisible] = useState(false);
   const [loadModalVisible, setLoadModalVisible] = useState(false);
+  const [saveModalVisible, setSaveModalVisible] = useState(false);
 
   const [namesList, setNamesList] = useState([]);
 
@@ -114,12 +120,15 @@ export default function App() {
     participants.splice(0, 1);
     participants.push(temp);
 
-    setTurnTakersList(participants);
     let newOffset = 0;
     if (offset >= participants.length) {
       newOffset = offset + 1;
     }
     setOffset(newOffset);
+    if (participants.length) {
+      participants[0].checked = false;
+    }
+    setTurnTakersList(participants);
   }
 
   function reduceTurn() {
@@ -154,14 +163,6 @@ export default function App() {
     }
     sessions.push(turnTakersList);
     StoreData(SavedSessions, sessions);
-  }
-
-  async function LoadSessions() {
-    let retrievedData = await RetrieveData(SavedSessions);
-    console.log(retrievedData);
-    if (retrievedData == null) {
-      retrievedData = [];
-    }
   }
 
   return (
@@ -201,7 +202,7 @@ export default function App() {
       <View style={styles.bottomButtons}>
         <TouchableOpacity
           onPress={() => {
-            SaveSession(turnTakersList);
+            setSaveModalVisible(!saveModalVisible);
           }}
         >
           <View style={styles.addButton}>
@@ -231,6 +232,11 @@ export default function App() {
             <Text>Custom</Text>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => ClearMemory()}>
+          <View style={styles.addButton}>
+            <Text>Clear</Text>
+          </View>
+        </TouchableOpacity>
       </View>
       {customModalVisible && (
         <CustomModal
@@ -245,8 +251,13 @@ export default function App() {
         />
       )}
       {loadModalVisible && (
-        <LoadModal deactivate={setLoadModalVisible} Add={AddParticipant} />
+        <LoadModal
+          loadedSessions={loadedSessions}
+          deactivate={setLoadModalVisible}
+          Add={AddParticipant}
+        />
       )}
+      {saveModalVisible && <SaveModal deactivate={setSaveModalVisible} />}
       <StatusBar style="light" />
     </View>
   );

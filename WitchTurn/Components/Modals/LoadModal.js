@@ -14,6 +14,7 @@ import SessionLoadIcon from "../SessionLoadIcon";
 import Gobo from "../../assets/Pictures/GoboTest.png";
 
 function LoadModal(props) {
+  console.log(props.loadedSessions);
   return (
     <View style={styles.interfaceBody}>
       <TouchableOpacity
@@ -29,11 +30,20 @@ function LoadModal(props) {
         style={styles.loadSeleteWrapper}
         contentContainerStyle={styles.loadSelectScroll}
       >
-        <SessionLoadIcon
-          imageSource={Gobo}
-          LeaderName={"Chongus"}
-          SaveName={"My Personal Save"}
-        ></SessionLoadIcon>
+        {props.loadedSessions
+          ? props.loadedSessions.map((session, index) => {
+              if (session.length) {
+                return (
+                  <SessionLoadIcon
+                    imageSource={Gobo}
+                    LeaderName={"temp"}
+                    SaveName={"My personalSave"}
+                    key={index}
+                  ></SessionLoadIcon>
+                );
+              }
+            })
+          : null}
       </ScrollView>
     </View>
   );
