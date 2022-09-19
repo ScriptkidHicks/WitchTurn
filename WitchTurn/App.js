@@ -30,6 +30,8 @@ export default function App() {
 
   const [offset, setOffset] = useState(0);
 
+  const [saveAvailable, setSaveAvailable] = useState(true);
+
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [genericModalVisible, setGenericModalVisible] = useState(false);
   const [loadModalVisible, setLoadModalVisible] = useState(false);
@@ -45,6 +47,10 @@ export default function App() {
         ? b.Bonus - a.Bonus
         : b.Initiative - a.Initiative;
     });
+  }
+
+  function PrintExample(word) {
+    console.log("The word is ", word);
   }
 
   function AddParticipant(name, initiative, bonus, characterImage) {
@@ -150,19 +156,59 @@ export default function App() {
     setOffset(newOffset);
   }
 
-  async function LoadLoadModal() {
+  async function LoadSessions() {
     const sessions = await RetrieveData(SavedSessions);
-    await setLoadedSessions(sessions);
+    if (sessions) {
+      setLoadedSessions(sessions);
+    }
+  }
+
+  async function LoadLoadModal() {
+    await LoadSessions();
     setLoadModalVisible(true);
   }
 
-  async function SaveSession(ParticipantList) {
+  async function LoadSaveModal() {
+    await LoadSessions();
+    console.log("load save modal loaded sessions");
+    console.log(loadedSessions);
+    console.log("Loaded sessions length: " + loadedSessions.length);
+    await setSaveAvailable(loadedSessions.length < 10);
+    setSaveModalVisible(true);
+  }
+
+  async function SaveSession(SessionTitle) {
+    if (SessionTitle === undefined || SessionTitle === null) {
+      console.log(SessionTitle);
+      return false;
+    }
+    console.log("Session title: " + SessionTitle);
     let sessions = await RetrieveData(SavedSessions);
     if (sessions === null) {
       sessions = [];
     }
-    sessions.push(turnTakersList);
-    StoreData(SavedSessions, sessions);
+    let participants = [...turnTakersList];
+    console.log("participants: " + participants);
+    if (participants.length == 0) {
+      console.log("there were no participants");
+      return false;
+    }
+    let sessionSaveObject = {
+      title: SessionTitle,
+      participants: participants,
+    };
+    sessions.push(sessionSaveObject);
+    await StoreData(SavedSessions, sessions);
+    LoadSessions();
+    setSaveModalVisible(false);
+    return true;
+  }
+
+  async function DeleteSavedSession(index) {
+    let sessions = [...loadedSessions];
+    sessions.splice(index, 1);
+    await StoreData(SavedSessions, sessions);
+    await LoadSessions();
   }
 
   return (
@@ -202,7 +248,7 @@ export default function App() {
       <View style={styles.bottomButtons}>
         <TouchableOpacity
           onPress={() => {
-            setSaveModalVisible(!saveModalVisible);
+            LoadSaveModal();
           }}
         >
           <View style={styles.addButton}>
@@ -255,9 +301,17 @@ export default function App() {
           loadedSessions={loadedSessions}
           deactivate={setLoadModalVisible}
           Add={AddParticipant}
+          LoadSession={setTurnTakersList}
+          DeleteFunction={DeleteSavedSession}
         />
       )}
-      {saveModalVisible && <SaveModal deactivate={setSaveModalVisible} />}
+      {saveModalVisible && (
+        <SaveModal
+          deactivate={setSaveModalVisible}
+          saveFunction={SaveSession}
+          saveAvailable={saveAvailable}
+        />
+      )}
       <StatusBar style="light" />
     </View>
   );

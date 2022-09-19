@@ -3,8 +3,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  TextInput,
   Image,
   ScrollView,
 } from "react-native";
@@ -14,7 +12,6 @@ import SessionLoadIcon from "../SessionLoadIcon";
 import Gobo from "../../assets/Pictures/GoboTest.png";
 
 function LoadModal(props) {
-  console.log(props.loadedSessions);
   return (
     <View style={styles.interfaceBody}>
       <TouchableOpacity
@@ -30,20 +27,19 @@ function LoadModal(props) {
         style={styles.loadSeleteWrapper}
         contentContainerStyle={styles.loadSelectScroll}
       >
-        {props.loadedSessions
-          ? props.loadedSessions.map((session, index) => {
-              if (session.length) {
-                return (
-                  <SessionLoadIcon
-                    imageSource={Gobo}
-                    LeaderName={"temp"}
-                    SaveName={"My personalSave"}
-                    key={index}
-                  ></SessionLoadIcon>
-                );
-              }
-            })
-          : null}
+        {props.loadedSessions.map((session, index) => {
+          return (
+            <SessionLoadIcon
+              imageSource={session["participants"][0]["imageSource"]}
+              LeaderName={session["participants"][0]["name"]}
+              SaveName={session["title"]}
+              LoadSession={props.LoadSession}
+              session={session["participants"]}
+              key={index}
+              DeleteFunction={props.DeleteFunction}
+            ></SessionLoadIcon>
+          );
+        })}
       </ScrollView>
     </View>
   );

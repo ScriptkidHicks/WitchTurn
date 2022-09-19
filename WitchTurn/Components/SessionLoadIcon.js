@@ -9,10 +9,18 @@ function SessionLoadIcon(props) {
         <Text style={styles.infoText}>{props.SaveName}</Text>
       </View>
       <View style={styles.buttonsDiv}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            props.LoadSession(props.session);
+          }}
+        >
           <Text style={styles.actionButton}>Load</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            props.DeleteFunction(props.key);
+          }}
+        >
           <Text style={styles.actionButton}>Delete</Text>
         </TouchableOpacity>
       </View>

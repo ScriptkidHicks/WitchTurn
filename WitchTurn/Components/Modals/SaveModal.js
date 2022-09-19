@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   TextInput,
-  Image,
-  ScrollView,
 } from "react-native";
+import { useState } from "react/cjs/react.development";
 
 function SaveModal(props) {
+  const [saveName, setSaveName] = useState(null);
   return (
     <View style={styles.interfaceBody}>
       <TouchableOpacity
@@ -22,13 +22,30 @@ function SaveModal(props) {
       </TouchableOpacity>
       <View style={styles.SaveWrapper}>
         <Text style={styles.HeaderText}>Save Session</Text>
-        <TextInput
-          style={styles.SessionTextInput}
-          placeholder="Session Save Title"
-        ></TextInput>
-        <TouchableOpacity>
-          <Text style={styles.SaveButton}>Save</Text>
-        </TouchableOpacity>
+        {props.saveAvailable && (
+          <TextInput
+            style={styles.SessionTextInput}
+            placeholder="Session Save Title"
+            value={saveName}
+            onChangeText={(text) => {
+              setSaveName(text);
+            }}
+          ></TextInput>
+        )}
+        {props.saveAvailable && (
+          <TouchableOpacity
+            onPress={() => {
+              props.saveFunction(saveName);
+            }}
+          >
+            <Text style={styles.SaveButton}>Save</Text>
+          </TouchableOpacity>
+        )}
+        {!props.saveAvailable && (
+          <Text style={styles.ApologyText}>
+            You have 10 sessions saved. Please delete some before saving more.
+          </Text>
+        )}
       </View>
       <KeyboardAvoidingView></KeyboardAvoidingView>
     </View>
@@ -97,5 +114,10 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingRight: 25,
     paddingLeft: 25,
+  },
+
+  ApologyText: {
+    textAlign: "center",
+    lineHeight: 30,
   },
 });
